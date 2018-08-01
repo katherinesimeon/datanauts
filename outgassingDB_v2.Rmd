@@ -1,0 +1,131 @@
+---
+title: 'Datanauts: Outgassing DB Data'
+author: "Katherine Simeon"
+date: "August 2018"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+  
+  
+***  
+  
+## A Quick Preface  
+  
+I am excited to be part of the Fall 2018 Class of [NASA Datanauts](https://open.nasa.gov/explore/datanauts/)! I'll be using this repo to keep track of my work for this program. I'm currently on **Track 1: Intro to Coding** where I am creating a github project page to diplay live data.  
+  
+***
+  
+## Outgassing DB Data  
+  
+The data we are using is from NASA's open data portal and is a compilation of [outgassing data](https://data.nasa.gov/Applied-Science/Outgassing-Db/r588-f7pr) of materials, intended for spacecraft use. The data were obtained at the Goddard Space Flight Center (GSFC).    
+  
+To be honest, I have no idea what outgassing is and what this data means. I found this [blog post](http://mwexpert.typepad.com/rog_blog/2010/11/what-is-outgassing-and-when-does-it-matter.html) to be helpful in explaining the basic concepts in lay language. In short:
+   
+> Outgassing is a concern for any electronic equipment intended for use in high-vacuum environments. It refers to the release of gas trapped within a solid, such as a high-frequency circuit-board material... In space-based equipment, released gas can condense on such materials as camera lenses, rendering them inoperative.
+   
+Some variables we see in the data set:  
+  
+* Total mass loss (TML)    
+* Collected volatile condensable materials (CVCM)   
+* Water vapor recovered (WVR)
+   
+   
+Our assignment was the following: To tweak the site files to pull Outgassing data from data.nasa.gov via an API onto your site.  
+  
+This a screenshot of how mine looked:  
+  
+![*My static site displaying data*](mypage.png)  
+  
+  
+  
+Success! But, this presentation isn't super user-friendly.
+   
+   
+I figured this would be a good opportunity to play around with this data in R. In particular, I want to learn about working with `.json` files in R (I don't use `.json` files generally so I'm excited to familiarize myself with this file format). Also, for now I am sorta avoiding using javascript (the code for the original exercise was `.js` which you can see in my Archives directory). Hopefully I can develop more javascript knowledge at a later time.    
+  
+  
+***
+  
+### Packages  
+  
+Here are the packages I used (I am open to suggestions for other helpful tools!)  
+  
+```{r, eval=TRUE,message=FALSE,warning=FALSE}
+library(rjson) # Working with .json files in R
+library(DT) # We'll use this to make data readable (hopefully!)
+```
+  
+
+### Loading our data   
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+# Data table version
+json_data <- fromJSON(file='https://data.nasa.gov/resource/gymh-eyc2.json')
+  
+```
+  
+### Creating a data frame {#createdf} 
+  
+```{r, echo = TRUE}
+# Unlist the fromJSON() output
+json_unlisted <- lapply(json_data, 
+                        function(x) {
+  x[sapply(x, is.null)] <- NA
+  unlist(x)
+})
+
+# Combine our dissected parts of the json file and make it a dataframe
+outgassing_df <- as.data.frame(do.call("cbind", json_unlisted))
+
+# how big is our dataframe 
+dim(outgassing_df) 
+```
+  
+  
+There are a lot of columns, so when I use `head()`, I'm only going to pull the first 6 columns:  
+    
+```{r, echo=TRUE}
+# View the first six rows and columns our dataframe
+head(outgassing_df[,1:6])
+```
+  
+***
+  
+## Formatting our Data  
+  
+### Transposing the data frame
+   
+Our dataframe has 1000 columns because of the way it was unlisted. The output of `fromJSON()` is a list.  
+  
+Using the function `head()`, we see that each material in our dataset is notated as `[[number]]` and has multiple members (i.e. category, cvcm, id). So `[[1]]` has a value for `[[1]]$id` and etc.   
+
+```{r, echo=TRUE}
+class(json_data)
+json_data[1:2] # See items 1 and 2 in list json_data
+```
+  
+We want to make each material its own list in a dataframe. So we applied `unlist()` on our list and then used `cbind()` to put these lists together in a data frame. We did this when [creating our dataframe](#createdf).  
+  
+However, this resulted in each material in its own column. It's more intuitive to have each material in its own row. So we can transpose with `t()`.    
+  
+```{r,echo=TRUE}
+head(t(outgassing_df))
+```
+  
+  
+***
+  
+### Creating a data table   
+  
+Now we can put our data frame in a table for perusal.  
+  
+  
+
+```{r, echo=TRUE} 
+# Using the DT package:
+datatable(t(outgassing_df),options = list(searching=TRUE,pageLength=6))
+```
+
