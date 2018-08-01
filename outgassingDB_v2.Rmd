@@ -43,7 +43,7 @@ This a screenshot of how mine looked:
 Success! But, this presentation isn't super user-friendly.
    
    
-I figured this would be a good opportunity to play around with this data in R. In particular, I want to learn about working with `.json` files in R (I don't use `.json` files generally so I'm excited to familiarize myself with this file format). Also, for now I am sorta avoiding using javascript (the code for the original exercise was `.js` which you can see in my Archives directory). Hopefully I can develop more javascript knowledge at a later time.    
+I figured this would be a good opportunity to play around with this data in R. In particular, I want to learn about working with `.json` files in R (I don't use `.json` files generally so I'm excited to familiarize myself with this file format). Also, for now I am sorta avoiding using javascript (the code for the original exercise was `.js` which you can see in the [archives folder](https://github.com/katherinesimeon/datanauts/tree/master/Archive) of my Datanauts repo). Hopefully I can develop more javascript knowledge at a later time.    
   
   
 ***
@@ -59,7 +59,9 @@ library(DT) # We'll use this to make data readable (hopefully!)
   
 
 ### Loading our data   
-
+  
+*(in the `setup` R chunk)*
+  
 ```{r setup, include=TRUE}
 knitr::opts_chunk$set(echo = TRUE)
 # Data table version
