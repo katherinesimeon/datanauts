@@ -130,4 +130,27 @@ Now we can put our data frame in a table for perusal.
 # Using the DT package:
 datatable(t(outgassing_df),options = list(searching=TRUE,pageLength=6))
 ```
+  
+  
+*Addendum: Yay! It worked!*    
+  
+  
+***   
+  
+## Future Directions  
+  
+Overall, this was a fun, quick exercise to start exploring NASA data. Some goals/follow-up tasks that I will keep in mind:  
+  
+**Learn more about the concepts related to NASA data** - During my Datanaut experience, I will try to read up on outgassing, comets, and other space concepts that are related to the data we are working with. I welcome any reading/resource suggestions!
+
+**Go from RMarkdown to Shiny** - I used R-Markdown to write this explanation and work with the data in R. This is a perfect scenario for a shiny app (in fact, the [source page](https://data.nasa.gov/Applied-Science/Outgassing-Db/r588-f7pr) for the outgassing data has a "Create Visualization" button). This would be a great follow up project to actually apply what I've been learning about in Shiny.  
+  
+**Put everything I am learning about in context** - The first track involved getting started on github, making an API, and creating a github page (2 of these 3 I'd already done from my work in R-Ladies). [Making an API](https://nasadatanauts.github.io/alexbelloni/track1lesson2/index.html) was not difficult given the instructions provided and it was interesting to learn (I had never heard of Firebase); however, I still don't understand why we did it during the first track in Datanauts. During this learning process, I want to make sure I take the time to think/reflect on why we are learning specific techniques and topics. I also want to take a hypothesis-driven approach when working with these data sets.       
+  
+  
+  
+That's all for now! I hope to keep writing about this process as Datanauts continues!
+  
+***
+
 
